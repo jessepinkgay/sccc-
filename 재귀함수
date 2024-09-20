@@ -1,0 +1,42 @@
+11729번
+
+해석: n-1개의 원판을 먼저 a에서 b로 옮긴다 -> 제일 밑에있던 원판을 c로 옮긴다 -> 그위로 b에 옮겨놨던 n-1개의 원판을 다시 c로 옮기는 작업을한다
+
+필요한 작업: n-1이 0이 될때마다 작업을 더이상 수행할수 없으므로 마지막으로 수행한 작업을 출력한다.
+
+주의: 
+- 실제로 변수의 값을 서로 바꾸는 작업을 하지는 않고 표면상에서 '여기서 여기로 바꾼다는 표현'만 매개변수에 대입 순서를 서로 바꿔가며 출력하는것이므로 헷갈리지말기
+- c++ 에서는 std::count 라는 이름이 이미 정의되있으므로 무조건 cnt라고 변수 설정하기
+
+#include <iostream>
+using namespace std;
+int cnt=0;
+void f(int n, int a, int b, int c) {
+	if (n == 1) {
+		cout << a << ' ' << c << '\n';
+		return;
+	}
+	f(n - 1, a, c, b);
+	f(1, a, b, c);
+	f(n - 1, b, a, c);
+}
+
+void v(int n, int a, int b, int c) {
+
+	if (n == 1) {
+		cnt++;
+		return;
+	}
+	v(n - 1, a, c, b);
+	cnt++;
+	v(n - 1, b, a, c);
+}
+
+int main() {
+	int n;
+	cin >> n;
+	v(n, 1, 2, 3);
+	cout << cnt << '\n';
+	f(n, 1, 2, 3);
+	return 0;
+}
