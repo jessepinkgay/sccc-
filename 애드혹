@@ -1,0 +1,79 @@
+/*28359번 수열의 가치
+
+해석: 잘 생각해 보면 결국 두번 더해지는건 한가지 종류의 숫자 뿐이다. 즉 배열내 같은숫자들의 합이 제일 큰 숫자들이 두번 더해져야 하고, 나머지는 그 숫자들 앞에서 한번씩은 꼭 더해지도록 해주면 된다.
+
+필요한 작업:  배열로 나타내자면 1115533333처럼 제일 같은수의 합이 큰 수 n들은 뒤로 빼고, 나머지 숫자들은 그 앞에서 먼저 n보다 작은수는 오름차순으로, 그다음 n보다 높은수는 내림차순으로 나누어 정렬한다.
+
+주의:   	for(int i=0;i<n-1;i++){
+		        if (a[i] ==a[i+1]){
+			      cnt++;
+		      }
+		        else {
+			        cntarr.push_back(cnt*a[i]);
+			        b.push_back(a[i]);
+			        cnt = 1;
+		        }
+	        }                 에서 a배열의 마지막 수인 a[n-1]은 해결이 되지 않는다. 즉 a[n-1]를 해결할 코드를 덧붙여야한다.
+
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+	ios::sync_with_stdio(0); cin.tie(0);
+
+	int n,cnt=1,sum=0,num;
+	vector<int> cntarr;
+	cin >>n;
+	vector<int> a(n);
+	vector<int> b;
+	vector<int> c;
+	for(int i=0;i<n;i++){
+		cin>>a[i];
+	}
+
+	sort(a.begin(),a.end());
+
+	for(int i=0;i<n-1;i++){
+		if (a[i] ==a[i+1]){
+			cnt++;
+		}
+		else {
+			cntarr.push_back(cnt*a[i]);
+			b.push_back(a[i]);
+			cnt = 1;
+		}
+	}
+	if(a[n-1]==a[n-2]){
+		cntarr.push_back(cnt*a[n-1]);
+		b.push_back(a[n-1]);
+	}
+	else {
+		cntarr.push_back(a[n-1]);
+		b.push_back(a[n-1]);
+	}
+	for(int i=0;i<n;i++){
+		if (cntarr[i]==*max_element(cntarr.begin(),cntarr.end())){
+			num = b[i];
+		}
+	}
+	for(int i=0;i<n;i++){
+		sum +=a[i];
+	}
+	sum+=*max_element(cntarr.begin(),cntarr.end());
+
+	for (int i=0;i<n;i++){
+		if (a[i]>=num){
+			sort(a.begin()+i,a.end(),greater<int>());
+			break;
+		}
+	}
+	cout<<sum<<'\n';
+	for (int i=0;i<n;i++){
+		cout<<a[i]<<' ';
+	}
+
+
+	return 0;
+}
