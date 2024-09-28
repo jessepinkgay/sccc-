@@ -1,0 +1,53 @@
+/*
+17245번 서버실
+
+해석: 몇층만큼 높아져야 전체 컴퓨터의 절반 이상을 차지하는지 알아내야 한다. 시간 복잡도를 줄이기 위해서 이분탐색을 활용한다. 즉 가장 높은 탑과 가장 낮은탑(0층)의 중간지점 층부터 탐색하면서 어떤 층일때 절반을 딱
+     최소로 지나게 되는지 찾는다.
+
+필요한 작업: left를 최소(0), right를 최대(Max)로 설정하고 이때의 중간층 dl 이하로 존재하는 모든 컴퓨터의 합이 전체 컴퓨터의 절반이상인지 확인한 후, 절반 이상일경우 조건을 만족하는 더 낮은 층을 찾기위해 최대층 right을 
+            기존에 확인한 dl층 미만으로 내린다. 절반 이하였을경우에는 dl 보다 더 높은층을 탐색하기 위해 최소층 left를 dl초과로 올려보낸다. 조건을 만족할때마다 ans에 조건을 만족하는 최소층을 임시 정답으로 저장한다. 이는
+            최소층 left와 최대층 right 이 같아질때까지 반복한다.
+
+주의: 순간 문제를 파악했을때는 단순히 반복문에 조건문을 겹쳐 금방 코드를 완성할수 있었지만 이는 시간복잡도를 고려하지 않아 실패할 확률이 크다. 조건문과 반복문이 큰 수들에 대해서 여러번 겹쳐질수 있을때는 이분탐색을 활용해보자.
+
+*/
+
+
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+
+int main(){
+    ios::sync_with_stdio(0); cin.tie(0);
+
+    ll n,i,Max=0,ans=10e30;
+    long double sum=0;
+    cin>>n;
+    vector<ll> a(n*n);
+
+    for(i=0;i<n*n;i++){
+        cin>>a[i];
+        Max = max(Max,a[i]);
+        sum+=a[i];
+    }
+
+    int left = 0;
+    int right = Max;
+
+    while (left<=right){
+        ll dl = (left+right)/2,cnt=0;
+
+        for(i=0;i<n*n;i++){
+            cnt+=min(dl,a[i]);
+        }
+        if (cnt>=round(sum/2)){
+            ans = min(ans,dl);
+            right=dl-1;
+        }
+        else left=dl+1;
+    }
+
+    cout<<ans;
+    return 0;
+}
+
