@@ -51,3 +51,47 @@ int main(){
     return 0;
 }
 
+
+/*
+1166번 선물
+
+해석: 이분탐색으로 가장 최댓값의 a로 n개의 상자가 들어갈수 있도록 하는 코드를 작성해야함.
+
+필요한 작업: 최댓값과 최솟값을 정해두고 그 중간값인 임의의 길이len을 정한다.  세로,가로,높이를 각각 len으로 나눴을때의 정숫값(ex 3.14 ->3)을 서로 곱했을때 나오는 값이 len길이의 상자가 최대로 들어갈수있는 개수이다.
+           이것이 n보다 크면 조건을 만족한것이므로 더 큰 최적의 len을 탐색하고, 반대의 경우에도 마찬가지로 len을 작게 해 다시 반복한다.
+
+주의: 문제에서 요하는 상황에 따라 변수를 지정하는 자료형에 주의해야한다. min()과 max()함수는 두개의 인자만 비교할수있다. 출력할 값의 소수점을 정하려면 cout<<fixed;  cout.precision(n);을 먼저 쓰면 된다.
+     소수점 밑으로 n개의 숫자가 더 나타난다.
+
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+using d = double;
+
+int main(){
+    ios::sync_with_stdio(0); cin.tie(0);
+    ll n,l,w,h;
+    d ans=0;
+    cin>>n>>l>>w>>h;
+
+    d left = 0;
+    d right = 10e20;
+
+
+    for(int i=0;i<10000;i++){
+        d len = (left+right)/2;
+        if ((ll)(l/len)*(ll)(w/len)*(ll)(h/len)>=n){
+            ans = max(ans,len);
+            left=len;
+        }
+        else right = len;
+    }
+    cout<<fixed;
+    cout.precision(9);
+    cout<<ans;
+
+    return 0;
+
+}
