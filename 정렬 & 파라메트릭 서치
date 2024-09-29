@@ -95,3 +95,50 @@ int main(){
     return 0;
 
 }
+
+/*
+2470번 두 용액
+
+해석: 여러 수가 주어졌을때 두 수의 합의 절댓값이 가장 작은 값일때의 두 수를 찾아내야함.
+
+필요한 작업: 중요한건 a[i]를 일일이 돌아가며 돌려볼 필요 없이 그냥 바로 a를 먼저 오름차순으로 정렬한다음 a[0]과 a[n-1]의 합을 구해보고 0보다 작으면 left인덱스를 한칸 앞으로 땡겨오고 0보다 크면 right 인덱스를 한칸 뒤로 땡겨오는 식으로 하면서 0에 가까워질때까지 계속 합이 0근처로 가도록 조절하면 된다.
+
+주의: 이분 탐색 문제는 계속 초기화 시켜줘야 할 변수가 어떤 위치에 있어야 할지를 잘 파악하는것이 중요함. 또한 left값과 right값이 어디로 정해지고 어떤 경우에 얼만큼 움직이는가가 이분탐색의 핵심임.
+*/
+
+
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+using ld = long double;
+
+int main() {
+    ios::sync_with_stdio(0); cin.tie(0);
+
+    ll i, n, q, w;
+    cin >> n;
+    vector<ll> a(n);
+    for (i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+    sort(a.begin(), a.end());
+ 
+    ll left = 0;
+    ll right = n - 1;
+    ll minsum = 200000000000;
+    while(left<right) {
+        ll sum = a[left] + a[right];
+        if (minsum > abs(sum)) {
+            minsum = abs(sum);
+            q = a[left];
+            w = a[right];
+            if (sum == 0) break;
+        }
+        if (sum < 0) left++;
+        else right--;
+    }
+
+    cout << q << ' ' << w ;
+
+    return 0;
+}
